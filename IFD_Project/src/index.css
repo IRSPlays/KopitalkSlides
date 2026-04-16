@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;500&display=swap');
+
+@theme {
+  --color-ifd-navy: #0A192F;
+  --color-ifd-coral: #FF6B6B;
+  --color-ifd-gold: #FFD166;
+  --color-ifd-emerald: #06D6A0;
+  --color-ifd-blue: #118AB2;
+
+  --font-sans: 'Inter', sans-serif;
+  --font-display: 'Outfit', sans-serif;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-ifd-navy);
+    color: white;
+    overflow: hidden;
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+}
