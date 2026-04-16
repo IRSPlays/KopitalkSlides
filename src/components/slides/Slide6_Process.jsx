@@ -3,7 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Slide from '../Slide';
 import { Lightbulb, PenTool, Printer, Smartphone } from 'lucide-react';
 import { Canvas } from '@react-three/fiber';
-import { useGLTF, Stage, OrbitControls } from '@react-three/drei';
+import { useGLTF, Stage, OrbitControls, useProgress } from '@react-three/drei';
+
+// Preload the heavy 3D GLB model in the background immediately when the app starts
+useGLTF.preload('/May Mall Upgraded.glb');
 
 function MallModel() {
     const { scene } = useGLTF('/May Mall Upgraded.glb');
@@ -12,6 +15,7 @@ function MallModel() {
 
 export default function Slide6_Process({ currentSubStep = 0 }) {
     const activeStep = currentSubStep;
+    const { progress } = useProgress();
 
     const steps = [
         { id: 0, icon: <Lightbulb size={24} />, title: "IDEATION" },
@@ -135,12 +139,22 @@ export default function Slide6_Process({ currentSubStep = 0 }) {
                                     <div className="w-full h-full cursor-move relative">
                                         
                                         {/* Extremely safe loading element behind the canvas */}
-                                        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0">
-                                            <div className="flex flex-col items-center gap-4">
-                                                <PenTool className="w-12 h-12 text-neon-cyan animate-bounce" />
-                                                <span className="text-neon-cyan font-mono tracking-widest animate-pulse whitespace-nowrap text-xl">LOADING MODEL...</span>
-                                            </div>
-                                        </div>
+                                        <AnimatePresence>
+                                            {progress < 100 && (
+                                                <motion.div 
+                                                    initial={{ opacity: 1 }}
+                                                    exit={{ opacity: 0 }}
+                                                    className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0"
+                                                >
+                                                    <div className="flex flex-col items-center gap-4">
+                                                        <PenTool className="w-12 h-12 text-neon-cyan animate-bounce" />
+                                                        <span className="text-neon-cyan font-mono tracking-widest animate-pulse whitespace-nowrap text-xl">
+                                                            LOADING MODEL... {Math.round(progress)}%
+                                                        </span>
+                                                    </div>
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
 
                                         <div className="absolute inset-0 z-10">
                                             <Canvas shadows dpr={[1, 2]} camera={{ position: [10, 10, 15], fov: 45 }}>
