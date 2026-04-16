@@ -11,7 +11,7 @@ export default function Slide10_Prizes({ currentSubStep = 0 }) {
     const activeIndex = currentSubStep > 0 ? currentSubStep - 1 : 0; 
 
     const team = [
-        { id: 1, name: "Adam", role: "The Visionary", desc: "Crafting the core concept and generational story." },
+        { id: 1, name: "Adam", role: "Logistics", desc: "Crafting the core concept and generational story." },
         { id: 2, name: "Andre", role: "The Storyteller", desc: "Translating the physical disconnect into design." },
         { id: 3, name: "Irfan", role: "The Architect", desc: "Engineering the custom hardware and 3D prints." },
         { id: 4, name: "Haziq", role: "Director & Coder", desc: "Leading and Building the Custom APP, 3d models and more." }
@@ -51,7 +51,7 @@ export default function Slide10_Prizes({ currentSubStep = 0 }) {
                             const zPos = isIdle ? -400 : (isActive ? 150 : -200 - Math.abs(offset) * 150);
                             const rotateY = isIdle ? 0 : offset * -20; 
                             const scale = isActive ? 1.05 : 0.85;
-                            const opacity = Math.abs(offset) > 2 ? 0 : (isIdle ? 0.4 : (isActive ? 1 : 0.3));
+                            const opacity = Math.abs(offset) > 3 ? 0 : (isIdle ? 0.4 : (isActive ? 1 : 0.3));
                             const zIndex = 50 - Math.abs(offset);
 
                             return (

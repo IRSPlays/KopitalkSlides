@@ -10,7 +10,6 @@ import Slide5_Unique from './components/slides/Slide5_Unique';
 import Slide6_Process from './components/slides/Slide6_Process';
 import Slide7_MakingOf from './components/slides/Slide7_MakingOf';
 import Slide8_Prototype from './components/slides/Slide8_Prototype';
-import Slide9_Demo from './components/slides/Slide9_Demo';
 import Slide10_Prizes from './components/slides/Slide10_Prizes';
 import Slide10_Summary from './components/slides/Slide10_Summary';
 
@@ -18,8 +17,8 @@ export default function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [currentSubStep, setCurrentSubStep] = useState(0);
   
-  const totalSlides = 11;
-  const maxSubStepsPerSlide = [1, 1, 2, 3, 1, 4, 3, 5, 1, 5, 1];
+  const totalSlides = 10;
+  const maxSubStepsPerSlide = [1, 1, 2, 3, 1, 4, 3, 5, 5, 1];
 
   const handleNext = () => {
     setCurrentSubStep((prevSub) => {
@@ -82,9 +81,8 @@ export default function App() {
             {currentSlide === 5 && <Slide6_Process key="slide6" currentSubStep={currentSubStep} />}
             {currentSlide === 6 && <Slide7_MakingOf key="slide7" currentSubStep={currentSubStep} />}
             {currentSlide === 7 && <Slide8_Prototype key="slide8" currentSubStep={currentSubStep} />}
-            {currentSlide === 8 && <Slide9_Demo key="slide9" currentSubStep={currentSubStep} />}
-            {currentSlide === 9 && <Slide10_Prizes key="slide10_prizes" currentSubStep={currentSubStep} />}
-            {currentSlide === 10 && <Slide10_Summary key="slide11_summary" currentSubStep={currentSubStep} />}
+            {currentSlide === 8 && <Slide10_Prizes key="slide10_prizes" currentSubStep={currentSubStep} />}
+            {currentSlide === 9 && <Slide10_Summary key="slide11_summary" currentSubStep={currentSubStep} />}
           </AnimatePresence>
         </div>
       </div>
