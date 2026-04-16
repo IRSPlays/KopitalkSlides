@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Slide from '../Slide';
 import { Lightbulb, PenTool, Printer, Smartphone } from 'lucide-react';
+import { Canvas } from '@react-three/fiber';
+import { useGLTF, Stage, OrbitControls } from '@react-three/drei';
+
+function MallModel() {
+    const { scene } = useGLTF('/May Mall Upgraded.glb');
+    return <primitive object={scene} />;
+}
 
 export default function Slide6_Process({ currentSubStep = 0 }) {
     const activeStep = currentSubStep;
@@ -109,21 +116,52 @@ export default function Slide6_Process({ currentSubStep = 0 }) {
                                 />
                                 
                                 <motion.div 
-                                    initial={{ scale: 0.5, rotateX: 60, rotateZ: -45 }}
-                                    animate={{ scale: 1, rotateX: [10, 20, 10], rotateY: [-10, 10, -10] }}
-                                    transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                                    className="w-[80%] h-[80%] border-[6px] border-dashed border-neon-cyan/50 rounded-[3rem] flex flex-col items-center justify-center bg-neon-cyan/5 relative z-10 shadow-[inset_0_0_150px_rgba(0,242,255,0.15)] shadow-[0_0_100px_rgba(0,242,255,0.1)] perspective-[2000px]"
+                                    initial={{ scale: 0.8, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    transition={{ duration: 0.8, ease: "easeOut" }}
+                                    className="w-[90%] h-[85%] border border-neon-cyan/50 rounded-[3rem] flex flex-col relative z-10 shadow-[inset_0_0_150px_rgba(0,242,255,0.15)] shadow-[0_0_100px_rgba(0,242,255,0.1)] overflow-hidden bg-[#050505]"
                                 >
-                                    <div className="absolute top-12 left-12 flex gap-4">
-                                        <div className="w-6 h-6 rounded-full bg-red-500 animate-pulse" />
-                                        <div className="w-6 h-6 rounded-full bg-yellow-500 animate-pulse delay-75" />
-                                        <div className="w-6 h-6 rounded-full bg-green-500 animate-pulse delay-150" />
+                                    {/* Desktop UI Header */}
+                                    <div className="absolute top-8 left-8 flex items-center gap-4 z-20 backdrop-blur-md bg-black/40 px-4 py-2 rounded-full border border-white/10 shadow-xl">
+                                        <div className="flex gap-2">
+                                            <div className="w-4 h-4 rounded-full bg-red-500 shadow-[0_0_10px_red]" />
+                                            <div className="w-4 h-4 rounded-full bg-yellow-500 shadow-[0_0_10px_yellow]" />
+                                            <div className="w-4 h-4 rounded-full bg-green-500 shadow-[0_0_10px_green]" />
+                                        </div>
+                                        <span className="text-neon-cyan font-mono text-xs uppercase tracking-[0.2em] ml-2 font-bold">CAD Viewer • May_Mall_Upgraded.glb</span>
                                     </div>
-                                    <motion.div animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}>
-                                        <PenTool className="w-40 h-40 text-neon-cyan mb-8" />
-                                    </motion.div>
-                                    <h3 className="text-6xl text-neon-cyan font-black tracking-[0.3em] uppercase mb-6 drop-shadow-[0_0_20px_#00f2ff]">Drop 3D Models Here</h3>
-                                    <p className="text-2xl text-gray-300 font-light text-center max-w-3xl drop-shadow-md">This massive canvas is ready for your 3D CAD renders, wireframes, and map layouts.</p>
+                                    
+                                    {/* Interactive WebGL Canvas */}
+                                    <div className="w-full h-full cursor-move relative">
+                                        
+                                        {/* Extremely safe loading element behind the canvas */}
+                                        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0">
+                                            <div className="flex flex-col items-center gap-4">
+                                                <PenTool className="w-12 h-12 text-neon-cyan animate-bounce" />
+                                                <span className="text-neon-cyan font-mono tracking-widest animate-pulse whitespace-nowrap text-xl">LOADING MODEL...</span>
+                                            </div>
+                                        </div>
+
+                                        <div className="absolute inset-0 z-10">
+                                            <Canvas shadows dpr={[1, 2]} camera={{ position: [10, 10, 15], fov: 45 }}>
+                                                <Suspense fallback={null}>
+                                                    <ambientLight intensity={0.5} />
+                                                    {/* Fixed critical crash: preset MUST be rembrandt, portrait, upfront, or soft. */}
+                                                    <Stage preset="rembrandt" intensity={1} environment="city" adjustCamera={1.2}>
+                                                        <MallModel />
+                                                    </Stage>
+                                                    <OrbitControls autoRotate autoRotateSpeed={1.5} enablePan={true} enableZoom={true} makeDefault minPolarAngle={0} maxPolarAngle={Math.PI / 2 + 0.1} />
+                                                </Suspense>
+                                            </Canvas>
+                                        </div>
+                                    </div>
+
+                                    {/* Controller Hint */}
+                                    <div className="absolute bottom-8 right-8 z-20 pointer-events-none">
+                                        <span className="text-gray-300 font-mono text-xs uppercase tracking-[0.2em] bg-black/60 px-6 py-3 rounded-full backdrop-blur-md border border-white/10 shadow-2xl inline-block shadow-[0_0_20px_black]">
+                                            Interactive Canvas: Drag to orbit &bull; Scroll to zoom
+                                        </span>
+                                    </div>
                                 </motion.div>
                             </motion.div>
                         )}
