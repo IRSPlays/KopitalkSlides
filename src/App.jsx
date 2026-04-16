@@ -58,6 +58,14 @@ export default function App() {
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-void-black text-white">
+      
+      {/* Background Media Preloader - Eliminates buffering by silently caching the heavy video before we reach its slide */}
+      <video 
+        preload="auto" 
+        src="/Challenge Y (ADM SECONDARY DESIGN FORCE) Pitch Video.mp4" 
+        style={{ display: 'none' }} 
+      />
+
       {/* 3D Universe */}
       <Scene3D currentSlide={currentSlide} />
 
